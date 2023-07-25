@@ -2,18 +2,18 @@ import os
 import time
 import sys
 
-# 兼容 Python2
 if sys.version_info[0] == 3:
     import subprocess
 else:
+    # Python2
     import commands as subprocess
 
 
 def get_files(path):
-    """获取当前路径下所有文件"""
+    """get files from path"""
     files_list = []
     for filename in os.listdir(path):
-        # 检查是否为文件
+        # check is file
         if os.path.isfile(os.path.join(path, filename)):
             files_list.append(filename)
 
@@ -33,17 +33,17 @@ def pull_images(path):
                 continue
             image_name = line.replace('image:', '').strip()
             contents += image_name + '\n'
-        print('from file: {} get images'.format(file))
+        print('From file: {} get images'.format(file))
         print(contents)
 
     contents = contents.strip()
     with open(path + 'images.txt', 'w') as f:
         f.write(contents)
-    print('write images to images.txt')
+    print('Write images to images.txt')
 
-    print('10s后开始拉取images')
+    print('Start pulling images after 10s')
     time.sleep(10)
-    # 遍历contents，拉取images
+    # travel contents, pull images
     for line in contents.split('\n'):
         image_name = line.strip()
         command = 'docker pull {}'.format(image_name)
@@ -53,7 +53,7 @@ def pull_images(path):
 
 
 def package_images(path):
-    # 创建images文件夹，不用管是否存在
+    # Create a folder, whether it exists or not.
     os.makedirs("images")
     with open(path + 'images.txt', 'r') as f:
         f_readlines = f.readlines()
@@ -71,7 +71,6 @@ def package_images(path):
 def main(project_path, yml_path):
     pull_images(project_path + yml_path)
     package_images(project_path)
-
 
 
 if __name__ == '__main__':
