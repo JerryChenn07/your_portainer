@@ -21,6 +21,7 @@ def get_files(path):
 
 
 def pull_images(path):
+    images_set = set()
     contents = ''
     files_list = get_files(path)
     for file in files_list:
@@ -31,8 +32,12 @@ def pull_images(path):
         for line in f_readlines:
             if not line.strip().startswith('image: '):
                 continue
-            image_name = line.replace('image:', '').strip()
-            contents += image_name + '\n'
+            image_name = line.replace('image:', '').strip().split(' ', 1)[0]
+            if image_name in images_set:
+                continue
+            else:
+                images_set.add(image_name)
+                contents += image_name + '\n'
         print('From file: {} get images'.format(file))
         print(contents)
 
