@@ -18,4 +18,4 @@ for image_name in $(cat "./$all_images.txt"); do
 done
 
 # 确认你的存储空间足够
-tar zcvf $all_images.tar.gz $all_images
+#tar zcvf $all_images.tar.gz $all_images
